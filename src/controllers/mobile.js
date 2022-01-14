@@ -27,6 +27,7 @@ export default function mobileinit(){
         }
     })
     $(document).on("touchmove", "#luckysheet-grid-window-1", function(event){
+        clearInterval(Store.timeInterval);
         if(event.originalEvent.targetTouches.length > 1 || (event.scale && event.scale !== 1)){
             return;
         }

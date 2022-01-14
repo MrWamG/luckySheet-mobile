@@ -35,6 +35,9 @@ const Store = {
     jfcountfuncTimeout: null, 
     jfautoscrollTimeout: null,
 
+    pressTime:0,// 该时间是用来服务手机端的，记录是否长按
+	timeInterval:null, // 长按定时器
+
     luckysheet_select_status: false,
     luckysheet_select_save: [{ "row": [0, 0], "column": [0, 0] }],
     luckysheet_selection_range: [],

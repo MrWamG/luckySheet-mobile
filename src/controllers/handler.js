@@ -281,16 +281,13 @@ export default function luckysheetHandler() {
         menuButton.inputMenuButtonFocus(e.target);
     });
 	
-	// 该时间是用来服务手机端的，记录是否长按
-	let pressTime = 0;
-	let timeInterval = null; // 定时器
 	let lastMove = null; // 在touchmove中记录的最后离开时的event
     //表格mousedown
     $("#luckysheet-cell-main, #luckysheetTableContent").on('touchstart',e=> {
 		lastMove = e;
 		event = e.originalEvent.touches[0];
-		timeInterval = setInterval(()=>{
-			pressTime ++;
+		Store.timeInterval = setInterval(()=>{
+			Store.pressTime ++;
 		},600)
 		
         if($(event.target).hasClass('luckysheet-mousedown-cancel')){
@@ -1146,12 +1143,12 @@ export default function luckysheetHandler() {
 		lastMove = e;
 	}).on('touchend',e=> {
 		event = lastMove.originalEvent.touches[0];
-		clearInterval(timeInterval);
-		if(pressTime == 0){
+		clearInterval(Store.timeInterval);
+		if(Store.pressTime == 0){
 			return;
 		}
-		console.log(pressTime);
-		pressTime = 0;
+		console.log(Store.pressTime);
+		Store.pressTime = 0;
 		//禁止前台编辑(只可 框选单元格、滚动查看表格)
 		if (!Store.allowEdit) {
 			return;
