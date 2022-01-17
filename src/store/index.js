@@ -35,8 +35,10 @@ const Store = {
     jfcountfuncTimeout: null, 
     jfautoscrollTimeout: null,
 
-    pressTime:0,// 该时间是用来服务手机端的，记录是否长按
+    pressTime:0,// 该时间是用来服务手机端的，记录是否长按 presTime > 0
 	timeInterval:null, // 长按定时器
+
+    tableTouchMove:false,// 记录整张表格现在是否处于拖拽事件中，目前该变量一般用来服务handler.js中touchend是否要选中单元格
 
     luckysheet_select_status: false,
     luckysheet_select_save: [{ "row": [0, 0], "column": [0, 0] }],

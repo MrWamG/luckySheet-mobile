@@ -27,6 +27,7 @@ export default function mobileinit(){
         }
     })
     $(document).on("touchmove", "#luckysheet-grid-window-1", function(event){
+        Store.tableTouchMove = true;
         clearInterval(Store.timeInterval);
         if(event.originalEvent.targetTouches.length > 1 || (event.scale && event.scale !== 1)){
             return;
@@ -170,6 +171,7 @@ export default function mobileinit(){
         event.stopPropagation();
     })
     $(document).on("touchend", function(event){
+        Store.tableTouchMove = false;
         if(luckysheet_touchmove_status){
             let vy_x = Math.abs(luckysheet_touchmove_startPos.vy_x), friction_x = ((vy_x >> 31) * 2 + 1) * 0.25;
 

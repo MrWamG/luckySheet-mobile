@@ -492,20 +492,45 @@ export default function luckysheetHandler() {
     //表格mousedown
     $("#luckysheet-cell-main, #luckysheetTableContent").on('touchstart',e=> {
 		lastMove = e;
-		event = e.originalEvent.touches[0];
 
         // 长按600毫秒后显示单元格菜单
 		Store.timeInterval = setInterval(()=>{
 			Store.pressTime ++;
             if(Store.pressTime > 0){
-                console.log('长按了')
+                Store.tableTouchMove = true;
                 showCellMenu();
+                // 长按重置
                 clearInterval(Store.timeInterval);
-                Store.pressTime = 0;
+                Store.pressTime = 0; 
             }
 		},600)
 		
-        if($(event.target).hasClass('luckysheet-mousedown-cancel')){
+        
+
+        //$("#luckysheet-cols-h-c .luckysheet-cols-h-cells-c .luckysheet-cols-h-cells-clip .luckysheet-cols-h-cell-sel").removeClass("luckysheet-cols-h-cell-sel").addClass("luckysheet-cols-h-cell-nosel");
+
+        //$("#luckysheet-rows-h .luckysheet-rows-h-cells .luckysheet-rows-h-cells-c .luckysheet-rows-h-cells-clip .luckysheet-rows-h-cell-sel").removeClass("luckysheet-rows-h-cell-sel").addClass("luckysheet-rows-h-cell-nosel");
+
+
+        //$("#luckysheet-cols-h-c .luckysheet-cols-h-cells-c .luckysheet-cols-h-cells-clip .luckysheet-cols-h-cell-nosel").eq(col_index).removeClass("luckysheet-cols-h-cell-nosel").addClass("luckysheet-cols-h-cell-sel");
+
+        //$("#luckysheet-rows-h .luckysheet-rows-h-cells .luckysheet-rows-h-cells-c .luckysheet-rows-h-cells-clip .luckysheet-rows-h-cell-nosel").eq(row_index).removeClass("luckysheet-rows-h-cell-nosel").addClass("luckysheet-rows-h-cell-sel");
+
+        //event.stopImmediatePropagation();
+
+    }).on('touchmove',e=>{
+		// touchend没有pageX，所以我需要在touchmove时去记录pageX
+		lastMove = e;
+        clearInterval(Store.timeInterval);
+		Store.pressTime = 0;
+	}).on('touchend',e=> {
+        if(Store.tableTouchMove){
+            return;
+        }
+        clearInterval(Store.timeInterval);
+		Store.pressTime = 0;
+        event = lastMove.originalEvent.touches[0];
+		if($(event.target).hasClass('luckysheet-mousedown-cancel')){
             return;
         }
 
@@ -1341,25 +1366,6 @@ export default function luckysheetHandler() {
             "end_r": row, 
             "end_c": col 
         }, sheetFile,luckysheetTableContent);
-
-        //$("#luckysheet-cols-h-c .luckysheet-cols-h-cells-c .luckysheet-cols-h-cells-clip .luckysheet-cols-h-cell-sel").removeClass("luckysheet-cols-h-cell-sel").addClass("luckysheet-cols-h-cell-nosel");
-
-        //$("#luckysheet-rows-h .luckysheet-rows-h-cells .luckysheet-rows-h-cells-c .luckysheet-rows-h-cells-clip .luckysheet-rows-h-cell-sel").removeClass("luckysheet-rows-h-cell-sel").addClass("luckysheet-rows-h-cell-nosel");
-
-
-        //$("#luckysheet-cols-h-c .luckysheet-cols-h-cells-c .luckysheet-cols-h-cells-clip .luckysheet-cols-h-cell-nosel").eq(col_index).removeClass("luckysheet-cols-h-cell-nosel").addClass("luckysheet-cols-h-cell-sel");
-
-        //$("#luckysheet-rows-h .luckysheet-rows-h-cells .luckysheet-rows-h-cells-c .luckysheet-rows-h-cells-clip .luckysheet-rows-h-cell-nosel").eq(row_index).removeClass("luckysheet-rows-h-cell-nosel").addClass("luckysheet-rows-h-cell-sel");
-
-        //event.stopImmediatePropagation();
-
-    }).on('touchmove',e=>{
-		// touchend没有pageX，所以我需要在touchmove时去记录pageX
-		lastMove = e;
-	}).on('touchend',e=> {
-        clearInterval(Store.timeInterval);
-		Store.pressTime = 0;
-		
     }).dblclick(function (event) {
         if($(event.target).hasClass('luckysheet-mousedown-cancel')){
             return;
